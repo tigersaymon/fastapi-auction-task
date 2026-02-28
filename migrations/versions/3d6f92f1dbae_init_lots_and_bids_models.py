@@ -26,7 +26,7 @@ def upgrade() -> None:
     sa.Column('description', sa.String(length=1024), nullable=True),
     sa.Column('start_price', sa.Numeric(precision=12, scale=2), nullable=False),
     sa.Column('current_price', sa.Numeric(precision=12, scale=2), nullable=False),
-    sa.Column('status', sa.Enum('RUNNING', 'ENDED', name='lot_status'), nullable=False),
+    sa.Column('status', sa.Enum('running', 'ended', name='lot_status'), nullable=False),
     sa.Column('end_time', sa.DateTime(timezone=True), nullable=False),
     sa.Column('created_at', sa.DateTime(timezone=True), server_default=sa.text('now()'), nullable=False),
     sa.Column('version', sa.Integer(), nullable=False),
