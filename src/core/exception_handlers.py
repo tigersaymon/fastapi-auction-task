@@ -12,7 +12,7 @@ from src.lots.exceptions import (
 _STATUS_MAP: dict[type[DomainError], int] = {
     LotNotFoundError: status.HTTP_404_NOT_FOUND,
     LotEndedError: status.HTTP_409_CONFLICT,
-    BidTooLowError: status.HTTP_422_UNPROCESSABLE_ENTITY,
+    BidTooLowError: status.HTTP_422_UNPROCESSABLE_CONTENT,
     ConcurrentUpdateError: status.HTTP_409_CONFLICT,
 }
 
