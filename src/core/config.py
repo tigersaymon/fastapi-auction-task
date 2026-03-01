@@ -22,6 +22,10 @@ class Settings(BaseSettings):
     POSTGRES_PORT: int = 5432
     POSTGRES_DB: str = "auction"
 
+    # Auction rules
+    bid_extension_seconds: int = 120
+    bid_extension_threshold_seconds: int = 300
+
     @property
     def database_url(self) -> str:
         return (
