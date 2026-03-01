@@ -36,6 +36,7 @@ class AuctionService:
                 start_price=data.start_price,
                 current_price=data.start_price,
                 end_time=data.end_time,
+                bids=[],
             )
             lot = await self._uow.lots.add(lot)
             await self._uow.commit()
