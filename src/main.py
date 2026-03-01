@@ -1,21 +1,39 @@
+import asyncio
+import logging
 from collections.abc import AsyncIterator
-from contextlib import asynccontextmanager
+from contextlib import asynccontextmanager, suppress
 
 from fastapi import FastAPI
 
 from core.config import get_settings
 from core.exception_handlers import register_exception_handlers
+from core.logging_config import setup_logging
 from src.lots.router import router as lots_router
 from src.ws.manager import ConnectionManager
 from src.ws.router import router as ws_router
+from tasks.scheduler import scheduler_loop
 
 settings = get_settings()
+setup_logging(debug=settings.DEBUG)
+
+logger = logging.getLogger(__name__)
 
 
 @asynccontextmanager
 async def lifespan(app: FastAPI) -> AsyncIterator[None]:
     app.state.ws_manager = ConnectionManager()
+
+    scheduler_task = asyncio.create_task(scheduler_loop(app.state.ws_manager))
+    logger.info("Application started")
+
     yield
+
+    scheduler_task.cancel()
+
+    with suppress(asyncio.CancelledError):
+        await scheduler_task
+
+    logger.info("Application stopped")
 
 
 app = FastAPI(
@@ -27,6 +45,7 @@ app = FastAPI(
 
 app.include_router(lots_router, prefix=settings.API_PREFIX)
 app.include_router(ws_router, prefix=settings.API_PREFIX)
+
 register_exception_handlers(app)
 
 

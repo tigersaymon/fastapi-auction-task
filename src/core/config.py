@@ -25,6 +25,10 @@ class Settings(BaseSettings):
     # Auction rules
     bid_extension_seconds: int = 120
     bid_extension_threshold_seconds: int = 300
+    scheduler_poll_seconds: int = 5
+
+    # CORS
+    cors_origins: list[str] = ["*"]
 
     @property
     def database_url(self) -> str:
