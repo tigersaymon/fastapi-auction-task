@@ -1,9 +1,10 @@
 from collections.abc import AsyncIterator
 from contextlib import asynccontextmanager
 
-from fastapi import APIRouter, FastAPI
+from fastapi import FastAPI
 
 from core.config import get_settings
+from core.exception_handlers import register_exception_handlers
 from src.lots.router import router as lots_router
 from src.ws.manager import ConnectionManager
 
@@ -16,7 +17,17 @@ async def lifespan(app: FastAPI) -> AsyncIterator[None]:
     yield
 
 
-app = FastAPI(lifespan=lifespan)
-api_router = APIRouter(prefix=settings.API_PREFIX)
+app = FastAPI(
+    title=settings.APP_NAME,
+    lifespan=lifespan,
+    docs_url="/docs",
+    redoc_url="/redoc",
+)
 
-api_router.include_router(lots_router)
+app.include_router(lots_router, prefix=settings.API_PREFIX)
+register_exception_handlers(app)
+
+
+@app.get("/health", tags=["system"])
+async def health_check() -> dict[str, str]:
+    return {"status": "ok"}
