@@ -36,3 +36,16 @@ class LotResponseSchema(BaseModel):
     end_time: datetime
     created_at: datetime
     bids: list[BidResponseSchema] = []
+
+
+class PaginationParamsSchema(BaseModel):
+    offset: int = Field(default=0, ge=0)
+    limit: int = Field(default=20, ge=1, le=100)
+
+
+class PaginatedResponseSchema[T](BaseModel):
+    items: list[T]
+    total: int
+    offset: int
+    limit: int
+    has_more: bool
