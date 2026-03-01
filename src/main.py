@@ -6,14 +6,14 @@ from contextlib import asynccontextmanager, suppress
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 
-from core.config import get_settings
-from core.exception_handlers import register_exception_handlers
-from core.logging_config import setup_logging
-from core.middleware import RequestIDMiddleware
+from src.core.config import get_settings
+from src.core.exception_handlers import register_exception_handlers
+from src.core.logging_config import setup_logging
+from src.core.middleware import RequestIDMiddleware
 from src.lots.router import router as lots_router
+from src.tasks.scheduler import scheduler_loop
 from src.ws.manager import ConnectionManager
 from src.ws.router import router as ws_router
-from tasks.scheduler import scheduler_loop
 
 settings = get_settings()
 setup_logging(debug=settings.DEBUG)
