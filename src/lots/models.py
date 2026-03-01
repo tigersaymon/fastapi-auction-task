@@ -21,7 +21,7 @@ class Lot(Base):
     # to avoid race condition
     version: Mapped[int] = mapped_column(default=1)
 
-    __mapper_args__ = {"version_id_col": version}  # noqa: RUF012
+    __mapper_args__ = {"version_id_col": version}  # noqa
 
     title: Mapped[str] = mapped_column(String(255))
     description: Mapped[str | None] = mapped_column(String(1024))
