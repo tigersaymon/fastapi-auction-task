@@ -7,6 +7,7 @@ from core.config import get_settings
 from core.exception_handlers import register_exception_handlers
 from src.lots.router import router as lots_router
 from src.ws.manager import ConnectionManager
+from src.ws.router import router as ws_router
 
 settings = get_settings()
 
@@ -25,6 +26,7 @@ app = FastAPI(
 )
 
 app.include_router(lots_router, prefix=settings.API_PREFIX)
+app.include_router(ws_router, prefix=settings.API_PREFIX)
 register_exception_handlers(app)
 
 
