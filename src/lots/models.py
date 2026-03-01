@@ -42,6 +42,7 @@ class Lot(Base):
     # RELATIONS
     bids: Mapped[list["Bid"]] = relationship(
         back_populates="lot",
+        lazy="selectin",
         order_by="Bid.created_at.desc()",
     )
 
